@@ -18,8 +18,10 @@ outcomes simple. We won’t be running the code (or deploying it to prod), so it
 
 1. run ``sh bootstrap-loc.sh`` file to initiate the project
 2. run ``docker compose exec php-fpm composer install`` to install the dependencies
-3. run ``docker compose exec php-fpm bin/console doctrine:fixtures:load -n`` to load fixtures
-4. run ``docker compose exec php-fpm bin/phpunit tests --stop-on-failure`` to run the tests (Functional and Unit)
+3. run ``docker compose exec php-fpm bin/console doctrine:database:create`` to create the database
+4. run ``docker compose exec php-fpm bin/console doctrine:migrations:migrate --no-interaction`` to run the migrations
+5. run ``docker compose exec php-fpm bin/console doctrine:fixtures:load -n`` to load fixtures
+6. run ``docker compose exec php-fpm bin/phpunit tests --stop-on-failure`` to run the tests (Functional and Unit)
 
 # API Endpoints
 
