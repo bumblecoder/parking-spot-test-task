@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  php-fpm:
+    container_name: test-php
+    tty: true
+    build:
+      dockerfile: Dockerfile
+      args:
+        - USER_ID=$uid
+        - GROUP_ID=$gid
+        - USERNAME=$USER
+    volumes:
+      - ./code:/code
+    restart: unless-stopped
+    networks:
+      - symfony_app_network
+
+  nginx:
+    image: nginx:1.23-alpine
+    container_name: test-nginx
+    depends_on:
+      - php-fpm
+    volumes:
+      - ./code:/code
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8092:80"
+    restart: unless-stopped
+    networks:
+      - symfony_app_network
+
+  mysql:
+    image: mysql:8.0.33
+    platform: linux/x86_64
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - test-mysql-data:/var/lib/mysql:cached
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "33069:3306"
+    depends_on:
+      - php-fpm
+    networks:
+      - symfony_app_network
+
+  redis:
+    image: "redis:alpine"
+    container_name: test-redis
+    ports:
+      - "6377:6379"
+    networks:
+      - symfony_app_network
+
+volumes:
+  test-mysql-data:
+
+networks:
+  symfony_app_network:
