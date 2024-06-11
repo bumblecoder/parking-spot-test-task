@@ -18,16 +18,23 @@ outcomes simple. We won’t be running the code (or deploying it to prod), so it
 
 1. run ``sh bootstrap-loc.sh`` file to initiate the project
 2. run ``docker compose exec php-fpm composer install`` to install the dependencies
-3. run ``docker compose exec php-fpm bin/console doctrine:database:create`` to create the database
-4. run ``docker compose exec php-fpm bin/console doctrine:migrations:migrate --no-interaction`` to run the migrations
-5. run ``docker compose exec php-fpm bin/console doctrine:fixtures:load -n`` to load fixtures
-6. run ``docker compose exec php-fpm bin/phpunit tests --stop-on-failure`` to run the tests (Functional and Unit)
-7. run ``cp .env .env.local``
-8. replace database url in `.env.local` with the following line: 
+3. run ``cp .env .env.local``
+4. replace database url in `.env.local` with the following line: 
 
 ``DATABASE_URL="mysqli://app_user:helloworld@mysql:3306/parking_db?serverVersion=16&charset=utf8"``
 
+
+5. run ``docker compose exec php-fpm bin/console doctrine:database:create`` to create the database
+6. run ``docker compose exec php-fpm bin/console doctrine:migrations:migrate --no-interaction`` to run the migrations
+7. run ``docker compose exec php-fpm bin/console doctrine:fixtures:load -n`` to load fixtures
+8. run ``docker compose exec php-fpm bin/phpunit tests --stop-on-failure`` to run the tests (Functional and Unit)
+
 # API Endpoints
+
+``http://localhost:8092``
+
+![image](https://github.com/bumblecoder/parking-spot-test-task/assets/149716117/3bab78f0-1b94-408f-8515-aa03a57f8261)
+
 
 ## Get Parking Lot Information
 
