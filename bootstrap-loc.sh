@@ -6,13 +6,6 @@ export gid="$(id -g)"
 export DOCKER_BUILDKIT=1
 
 dc_loc="docker compose --ansi never"
-ENV_DIST_FILE=".env.dist"
-ENV_FILE=".env"
-
-if [ -f "$ENV_DIST_FILE" ] && [ ! -f "$ENV_FILE" ]; then
-    cp "$ENV_DIST_FILE" "$ENV_FILE"
-    echo "$ENV_FILE created from $ENV_DIST_FILE"
-fi
 
 $dc_loc build --parallel
 $dc_loc up -d
