@@ -18,7 +18,7 @@ outcomes simple. We won’t be running the code (or deploying it to prod), so it
 
 1. run ``sh bootstrap-loc.sh`` file to initiate the project
 2. run ``docker compose exec php-fpm composer install`` to install the dependencies
-3. run ``cp .env .env.local``
+3. run ``cp code/.env code/.env.local``
 4. replace database url in `.env.local` with the following line: 
 
 ``DATABASE_URL="mysqli://app_user:helloworld@mysql:3306/parking_db?serverVersion=16&charset=utf8"``
