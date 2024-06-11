@@ -22,6 +22,10 @@ outcomes simple. We won’t be running the code (or deploying it to prod), so it
 4. run ``docker compose exec php-fpm bin/console doctrine:migrations:migrate --no-interaction`` to run the migrations
 5. run ``docker compose exec php-fpm bin/console doctrine:fixtures:load -n`` to load fixtures
 6. run ``docker compose exec php-fpm bin/phpunit tests --stop-on-failure`` to run the tests (Functional and Unit)
+7. run ``cp .env .env.local``
+8. replace database url in `.env.local` with the following line: 
+
+``DATABASE_URL="mysqli://app_user:helloworld@mysql:3306/parking_db?serverVersion=16&charset=utf8"``
 
 # API Endpoints
 
