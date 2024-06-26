@@ -26,10 +26,6 @@ class Vehicle
     #[Assert\NotBlank]
     private ?VehicleType $type = null;
 
-    #[ORM\OneToOne(targetEntity: ParkingSpot::class)]
-    #[ORM\JoinColumn(referencedColumnName: 'id', nullable: true)]
-    private ?ParkingSpot $parkingSpot = null;
-
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -43,18 +39,6 @@ class Vehicle
     public function setType(VehicleType $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getParkingSpot(): ?ParkingSpot
-    {
-        return $this->parkingSpot;
-    }
-
-    public function setParkingSpot(?ParkingSpot $parkingSpot): self
-    {
-        $this->parkingSpot = $parkingSpot;
 
         return $this;
     }

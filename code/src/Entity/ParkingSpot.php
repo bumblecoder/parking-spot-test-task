@@ -26,6 +26,10 @@ class ParkingSpot
     #[ORM\Column(name: 'is_occupied', type: 'boolean')]
     private ?bool $isOccupied = null;
 
+    #[ORM\OneToOne(targetEntity: Vehicle::class)]
+    #[ORM\JoinColumn(referencedColumnName: 'id', nullable: true)]
+    private ?Vehicle $vehicle = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +55,18 @@ class ParkingSpot
     public function setIsOccupied(bool $isOccupied): self
     {
         $this->isOccupied = $isOccupied;
+
+        return $this;
+    }
+
+    public function getVehicle(): ?Vehicle
+    {
+        return $this->vehicle;
+    }
+
+    public function setVehicle(?Vehicle $vehicle): self
+    {
+        $this->vehicle = $vehicle;
 
         return $this;
     }

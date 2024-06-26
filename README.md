@@ -59,6 +59,8 @@ Park a vehicle in the specified parking spot.
 
 ## Unpark a Vehicle
 
+``POST /api/parking-spot/{id}/unpark``
+
 ### Description
 
 Unpark a vehicle from the specified parking spot.

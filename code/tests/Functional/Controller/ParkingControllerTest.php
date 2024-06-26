@@ -7,6 +7,7 @@ namespace App\Tests\Functional\Controller;
 use App\Enum\ParkingSpotType;
 use App\Enum\VehicleType;
 use App\Factory\ParkingSpotFactory;
+use App\Factory\VehicleFactory;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,12 @@ class ParkingControllerTest extends WebTestCase
 
     public function testParkGetParkingLots(): void
     {
-        ParkingSpotFactory::createOne(['type' => ParkingSpotType::fromVehicleType(VehicleType::CAR->value)]);
+        $vehicle = VehicleFactory::createOne(['type' => VehicleType::CAR]);
+        ParkingSpotFactory::createOne([
+            'type' => ParkingSpotType::fromVehicleType(VehicleType::CAR->value),
+            'vehicle' => $vehicle,
+        ]);
+
         $this->client->request(Request::METHOD_GET, '/api/parking-lot');
 
         $response = $this->client->getResponse()->getContent();

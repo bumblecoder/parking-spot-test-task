@@ -80,7 +80,6 @@ class ParkingValetTest extends TestCase
 
         $this->entityManager->method('getRepository')->willReturn($vehicleRepository);
 
-        $this->entityManager->expects($this->once())->method('remove')->with($vehicle);
         $this->entityManager->expects($this->once())->method('flush');
 
         $this->parkingValet->unpark($parkingSpot);
@@ -93,22 +92,6 @@ class ParkingValetTest extends TestCase
 
         $parkingSpot = $this->createMock(ParkingSpot::class);
         $parkingSpot->method('isOccupied')->willReturn(false);
-
-        $this->parkingValet->unpark($parkingSpot);
-    }
-
-    public function testUnparkWithMissingVehicle(): void
-    {
-        $this->expectException(ParkingException::class);
-        $this->expectExceptionMessage('Vehicle not found.');
-
-        $parkingSpot = $this->createMock(ParkingSpot::class);
-        $parkingSpot->method('isOccupied')->willReturn(true);
-
-        $vehicleRepository = $this->createMock(EntityRepository::class);
-        $vehicleRepository->method('findOneBy')->willReturn(null);
-
-        $this->entityManager->method('getRepository')->willReturn($vehicleRepository);
 
         $this->parkingValet->unpark($parkingSpot);
     }

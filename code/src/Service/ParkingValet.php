@@ -36,10 +36,11 @@ final readonly class ParkingValet
         }
 
         $vehicle = new Vehicle();
-        $vehicle
-            ->setType($vehicleType)
-            ->setParkingSpot($parkingSpot);
-        $parkingSpot->setIsOccupied(true);
+        $vehicle->setType($vehicleType);
+        $parkingSpot
+            ->setIsOccupied(true)
+            ->setVehicle($vehicle)
+        ;
 
         $this->em->persist($vehicle);
         $this->em->flush();
@@ -54,13 +55,7 @@ final readonly class ParkingValet
             throw new ParkingException('Parking spot is free.');
         }
 
-        $vehicle = $this->em->getRepository(Vehicle::class)->findOneBy(['parkingSpot' => $parkingSpot]);
-
-        if (!$vehicle) {
-            throw new ParkingException('Vehicle not found.');
-        }
-
-        $this->em->remove($vehicle);
+        $parkingSpot->setVehicle(null);
         $parkingSpot->setIsOccupied(false);
 
         $this->em->flush();

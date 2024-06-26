@@ -25,7 +25,6 @@ final class VehicleFactory extends PersistentProxyObjectFactory
     {
         return [
             'type' => self::faker()->randomElement(VehicleType::cases()),
-            'parkingSpot' => null,
         ];
     }
 }

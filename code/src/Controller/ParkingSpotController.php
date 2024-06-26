@@ -41,14 +41,15 @@ final class ParkingSpotController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        $vehicleType = isset($data['type']) ? (string) $data['type'] : null;
+        $vehicleTypeRequested = isset($data['type']) ? (string) $data['type'] : null;
+        $vehicleType = $vehicleTypeRequested ? VehicleType::tryFrom(strtolower($vehicleTypeRequested)) : null;
 
-        if (!$vehicleType || !ParkingSpotType::fromVehicleType($vehicleType)) {
+        if (!$vehicleType || !ParkingSpotType::fromVehicleType($vehicleType->value)) {
             return $this->json(['message' => 'Invalid vehicle type.'], Response::HTTP_BAD_REQUEST);
         }
 
         try {
-            $this->valet->park(VehicleType::tryFrom(strtolower($vehicleType)), $parkingSpot);
+            $this->valet->park($vehicleType, $parkingSpot);
         } catch (ParkingException $e) {
             return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -95,7 +96,7 @@ final class ParkingSpotController extends AbstractController
             ->setAvailableSpots($spots);
 
         $normalizedData = $serializer->normalize($parkingLotData, null, [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['occupied'],
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['occupied', 'vehicle'],
         ]);
 
         $redis->set(
